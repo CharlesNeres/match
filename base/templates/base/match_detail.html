@@ -1,0 +1,182 @@
+{% extends 'base/base.html' %}
+
+{% block style %}
+h1{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+form{
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 2em;
+    padding: 1em;
+    background-color: #e0e0e0;
+}
+
+form input {
+    border-radius: 5px;
+    padding: .5em;
+    border: 1px solid #afafaf;
+    width: 100%;
+}
+
+form input[type='submit']{
+    text-transform: capitalize;
+    background-color: #794291;
+    color: #fff;
+    border: 1px solid #794291;
+    border-radius: 5px;
+    padding: .5em;
+    cursor: pointer;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 1em;
+    width: 10em;
+}
+
+form input[type='submit']:hover{
+    border: 1px solid #794291;
+    background-color: #9E57BD;
+    color: #fff;
+}
+
+.generate-team{
+    text-transform: capitalize;
+    background-color: #7C9143;
+    color: #fff;
+    border: 1px solid #586E1D;
+    border-radius: 5px;
+    padding: .3em;
+    cursor: pointer;
+    margin-top: 2em;
+    width: 8em;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.generate-team:hover{
+    border: 1px solid #586E1D;
+    background-color: #A8C45A;
+    color: #fff;
+}
+
+.players{
+    margin-top: 2em;
+}
+
+.player{
+    width: 100%;
+    margin: 0 auto;
+    padding: 1em;
+    background-color: #e0e0e0;
+}
+
+.player a{
+    text-decoration: none;
+    color: #000;
+}
+
+.player{
+    background-color: #f4f4f4;
+    padding: .5em;
+    overflow: hidden;
+    margin-bottom: 3px;
+}
+
+<!--.player:hover{-->
+<!--    background-color: #d3d3d3;-->
+<!--}-->
+
+.player .info-player{
+    float: left;
+}
+
+.player .actions-player{
+    float: right;
+}
+
+.type-player{
+    padding-left: .5em;
+    background-color: #381945;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.back-action{
+    display: inline-block;
+    margin: 1em 0;
+    text-decoration: none;
+    color: #794291;
+}
+
+{% endblock style %}
+
+{% block header %}
+<h1><a href="{% url 'home' %}">Home</a></h1>
+{% endblock header %}
+
+{% block content %}
+
+<a class="back-action" href="{% url 'home' %}">
+    <i class="bi bi-arrow-left-circle"></i>
+    <span>Back</span>
+</a>
+
+<h2>{{ match.match_name }}</h2>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Add player">
+</form>
+
+<a href="{% url 'generate_team' match.pk %}" class="generate-team">Generate teams</a>
+
+<div class="players">
+    {% regroup page_obj by type_player as type_player_list %}
+
+        {% for type_player in type_player_list %}
+<!--            <p class="type-player">{{ type_player.grouper }}</p>-->
+
+            {% for player in type_player.list %}
+                <div class="player">
+                    <div class="info-player">
+                        <p>{{ player.player_name }}</p>
+                        <span>{{ player.stars }} stars</span>
+                    </div>
+                    <div class="actions-player">
+                        <p>
+                            <a href="{% url 'edit_player' player.pk %}"><i title="Edit" class="bi bi-pencil"></i></a>
+                            <a href="{% url 'delete_player' player.pk %}" style="margin-left: .5em;"><i title="Delete" class="bi bi-trash"></i></a>
+                        </p>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No player found</p>
+            {% endfor %}
+        {% endfor %}
+</div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock content %}

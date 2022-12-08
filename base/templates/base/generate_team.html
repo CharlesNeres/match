@@ -1,0 +1,74 @@
+{% extends 'base/base.html' %}
+
+{% block style %}
+h1{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.generate-team{
+    text-transform: capitalize;
+    background-color: #7C9143;
+    color: #fff;
+    border: 1px solid #586E1D;
+    border-radius: 5px;
+    padding: .3em;
+    cursor: pointer;
+    margin: 2em 0;
+    width: 12em;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.generate-team:hover{
+    border: 1px solid #586E1D;
+    background-color: #A8C45A;
+    color: #fff;
+}
+
+.back-action{
+    display: inline-block;
+    margin-top: 1em;
+    text-decoration: none;
+    color: #794291;
+}
+
+{% endblock style %}
+
+{% block header %}
+<h1><a href="{% url 'home' %}">Home</a></h1>
+{% endblock header %}
+
+{% block content %}
+
+<p>
+    <a class="back-action" href="{% url 'match_detail' match.pk %}">
+        <i class="bi bi-arrow-left-circle"></i>
+        <span>Back</span>
+    </a>
+</p>
+
+<a href="{% url 'generate_team' match.pk %}" class="generate-team">Generate team again</a>
+
+{% if team1 %}
+    <p><strong>Team 1:</strong></p>
+    {% for player in team1 %}
+        <p>
+            <span>{{ player.player_name|capfirst }} - </span>
+            <span>{{ player.type_player|capfirst }}</span>
+        </p>
+    {% endfor %}
+{% endif %}
+<br>
+{% if team2 %}
+    <p><strong>Team 2:</strong></p>
+    {% for player in team2 %}
+        <p>
+            <span>{{ player.player_name|capfirst }} - </span>
+            <span>{{ player.type_player }}</span>
+        </p>
+    {% endfor %}
+{% endif %}
+{% endblock content %}

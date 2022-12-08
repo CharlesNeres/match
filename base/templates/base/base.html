@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100;300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <style>
+    *{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    html, body{
+        height: 100%;
+    }
+
+    body{
+        font-family: 'Catamaran', sans-serif;
+    }
+
+    header{
+        background-color: #794291;
+        width: 100%;
+        height: 10%;
+        color: #fff;
+        padding-left: 2em;
+    }
+
+    header h1 a{
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .content{
+        width: 40%;
+        margin:0 auto;
+        padding: 2em 0;
+    }
+
+    {% block style %}
+    {% endblock style %}
+    </style>
+</head>
+<body>
+    <header>
+      {% block header %}
+
+      {% endblock header %}
+    </header>
+
+    <div class="content">
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+    {% block script %}{% endblock script %}
+</body>
+</html>

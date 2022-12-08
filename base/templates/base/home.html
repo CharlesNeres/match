@@ -1,0 +1,159 @@
+{% extends 'base/base.html' %}
+
+{% block style %}
+h1{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+form{
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 2em;
+    padding: 1em;
+    background-color: #e0e0e0;
+}
+
+form input {
+    border-radius: 5px;
+    padding: .5em;
+    border: 1px solid #afafaf;
+    width: 100%;
+}
+
+form input[type='submit']{
+    text-transform: capitalize;
+    background-color: #794291;
+    color: #fff;
+    border: 1px solid #794291;
+    border-radius: 5px;
+    padding: .5em;
+    cursor: pointer;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 1em;
+    width: 10em;
+}
+
+form input[type='submit']:hover{
+    border: 1px solid #794291;
+    background-color: #fff;
+    color: #794291;
+}
+
+.matchs{
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 2em;
+    padding: 1em;
+    background-color: #e0e0e0;
+}
+
+.matchs a{
+    text-decoration: none;
+    color: #000;
+}
+
+.match{
+    width: 100%;
+    overflow: hidden;
+    background-color: #f4f4f4;
+    margin-bottom: 1em;
+    padding: .5em;
+
+}
+
+.match:hover{
+    background-color: #d3d3d3;
+    cursor: pointer;
+}
+
+.match .info-match{
+    float: left;
+}
+
+.match .actions-match{
+    float: right;
+}
+
+.step-links a:hover{
+    text-decoration: underline;
+}
+
+.success{
+    background-color: #D4EDDA;
+    color: #155724;
+    margin-top: .5em;
+    border-radius: 5px;
+    padding: .8em;
+}
+
+{% endblock style %}
+
+{% block header %}
+<h1><a href="{% url 'home' %}">Home</a></h1>
+{% endblock header %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Add match">
+</form>
+
+{% if messages %}
+    {% for message in messages %}
+        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+<div class="matchs">
+    {% for match in page_obj %}
+    <div class="match" onClick="location.href='{% url 'match_detail' match.pk %}'">
+        <div class="info-match">
+            <p><strong>{{ match.match_name}}</strong></p>
+            <p>Number of players per team: {{ match.number_players }}</p>
+            <span>Added players: {{ match.player_set.all.count }}</span></span>
+            <span></span>
+        </div>
+        <div class="actions-match">
+            <p>
+                <a href="{% url 'edit_match' match.pk %}"><i title="Edit" class="bi bi-pencil"></i></a>
+                <a href="{% url 'delete_match' match.pk %}" style="margin-left: .5em;"><i title="Delete" class="bi bi-trash"></i></a>
+            </p>
+        </div>
+    </div>
+    {% empty %}
+        <p>No match found</p>
+    {% endfor %}
+    
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+    <script>
+        message = document.querySelector(".success");
+        setTimeout(function(){
+           message.parentNode.removeChild(message);
+        }, 3000);
+    </script>
+{% endblock script %}

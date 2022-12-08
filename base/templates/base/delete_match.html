@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+
+{% block style %}
+.delete{
+    background-color: #F8D7DA;
+    color: #721C24;
+    border: 1px solid #F5C6CB;
+    border-radius: 2px;
+    padding: 2px 4px;
+}
+
+.no-delete{
+    background-color: #E2E3E5;
+    color: #383D41;
+    border: 1px solid #d6d6d6;
+    border-radius: 2px;
+    padding: 2px 4px;
+}
+
+{% endblock style %}
+
+
+{% block header %}
+<h1><a href="{% url 'home' %}">Home</a></h1>
+{% endblock header %}
+
+{% block content %}
+
+<p>Are you sure you want to delete match "{{ match.match_name }}"?</p>
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="button" class="no-delete" onclick="window.location.href='{% url 'home' %}'" value="No">
+    <input type="submit" class="delete" value="Yes">
+</form>
+{% endblock content %}
+

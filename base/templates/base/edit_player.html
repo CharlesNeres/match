@@ -1,0 +1,76 @@
+{% extends 'base/base.html' %}
+
+{% block style %}
+h1{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+form{
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 2em;
+    padding: 1em;
+    background-color: #e0e0e0;
+}
+
+form input, form select {
+    border-radius: 5px;
+    padding: .5em;
+    border: 1px solid #afafaf;
+    width: 100%;
+}
+
+form select{
+    background-color: #fff;
+}
+
+form input[type='submit']{
+    text-transform: capitalize;
+    background-color: #794291;
+    color: #fff;
+    border: 1px solid #794291;
+    border-radius: 5px;
+    padding: .5em;
+    cursor: pointer;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 1em;
+    width: 7em;
+}
+
+form input[type='submit']:hover{
+    border: 1px solid #794291;
+    background-color: #fff;
+    color: #794291;
+}
+
+.back-action{
+    display: inline-block;
+    margin-top: 1em;
+    text-decoration: none;
+    color: #794291;
+}
+
+{% endblock style %}
+
+{% block header %}
+<h1><a href="{% url 'home' %}">Home</a></h1>
+{% endblock header %}
+
+{% block content %}
+
+<a class="back-action" href="{% url 'match_detail' player.match.pk %}">
+    <i class="bi bi-arrow-left-circle"></i>
+    <span>Back</span>
+</a>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Edit">
+</form>
+
+{% endblock content %}
